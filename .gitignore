@@ -22,3 +22,8 @@ venv/
 # Ignore OS files
 .DS_Store
 Thumbs.db
+
+*.tmp
+
+# VS Code settings
+.vscode/

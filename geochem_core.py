@@ -28,9 +28,9 @@ from color_standards import (
 # -----------------------------------------------------------------------------
 # Reference Constants
 # -----------------------------------------------------------------------------
-DEFAULT_ROOT = os.getcwd()
-DEFAULT_FOLDER = "May25_Aug25_Nov25"
-DEFAULT_FILE = "NAL_Filters REPORT_2026_02_20_edit.xlsx"
+# DEFAULT_ROOT = os.getcwd()
+# DEFAULT_FOLDER = "May25_Aug25_Nov25"
+# DEFAULT_FILE = "NAL_Filters REPORT_2026_02_20_edit.xlsx"
 DEFAULT_SHEET = "ms"
 
 INFO_COLS = [
@@ -97,12 +97,13 @@ def _make_unique_headers(raw_columns) -> list[str]:
 
 @st.cache_data(show_spinner="Reading Excel workbook...")
 def load_excel_sheet(
-    file_bytes: bytes | None, local_path: str, sheet_name: str
+    file_bytes: bytes | None, sheet_name: str
 ) -> pd.DataFrame:
-    """Load a worksheet from uploaded .xlsx bytes or a local fallback path."""
+    """Load a worksheet from uploaded .xlsx bytes"""
     if file_bytes is not None:
         return pd.read_excel(BytesIO(file_bytes), sheet_name=sheet_name)
-    return pd.read_excel(local_path, sheet_name=sheet_name)
+    else:
+        st.info("Drop file to sidebar")
 
 
 def remap_geochem_columns(df_raw: pd.DataFrame, sheet_name: str):

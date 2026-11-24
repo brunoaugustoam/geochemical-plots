@@ -11,9 +11,6 @@ import streamlit as st
 
 from color_standards import get_element_color_map, get_group_color_map
 from geochem_core import (
-    DEFAULT_FILE,
-    DEFAULT_FOLDER,
-    DEFAULT_ROOT,
     DEFAULT_SHEET,
     REF_GROUP_ORDER,
     SEASON_FILTER,
@@ -66,20 +63,19 @@ with st.sidebar:
         disabled=not enable_levelling,
     )
 
-local_fallback_path = os.path.join(DEFAULT_ROOT, DEFAULT_FOLDER, DEFAULT_FILE)
+# local_fallback_path = os.path.join(DEFAULT_ROOT, DEFAULT_FOLDER, DEFAULT_FILE)
 file_bytes = uploaded_file.getvalue() if uploaded_file is not None else None
 
-if file_bytes is None and not os.path.exists(local_fallback_path):
+if file_bytes is None:# and not os.path.exists(local_fallback_path):
     st.title("🧪 Bulk Geochemical Data Explorer")
     st.info(
         "Please drag and drop an `.xlsx` file in the sidebar to begin "
-        f"(no local fallback file found at `{local_fallback_path}`)."
+
     )
     st.stop()
 
 df_raw = load_excel_sheet(
     file_bytes=file_bytes,
-    local_path=local_fallback_path,
     sheet_name=sheet_choice,
 )
 
