@@ -92,7 +92,7 @@ available_roles = sorted({
     for role in roles.keys()
     if role != "mult_req"
 })
-default_role = "ppb_1" if col_meta["sheet_key"] == "ms" else "ppm_1"
+default_role = "ppb_2" if col_meta["sheet_key"] == "ms" else "ppm_2"
 default_idx = available_roles.index(default_role) if default_role in available_roles else 0
 
 season_options = (
@@ -200,6 +200,8 @@ else:
 
 # Apply sample filters
 df_filtered = df_processed.copy()
+
+
 if "Season" in df_filtered.columns and selected_seasons:
     df_filtered = df_filtered[df_filtered["Season"].isin(selected_seasons)]
 if "Transect" in df_filtered.columns and selected_transects:
@@ -263,18 +265,18 @@ pages = [
         icon="🧭",
     ),
     st.Page(
-        "pages/03_correlations_placeholder.py",
-        title="3. Correlations (Placeholder)",
+        "pages/03_correlations.py",
+        title="3. Correlations",
         icon="🔗",
     ),
     st.Page(
-        "pages/04_element_ratios_placeholder.py",
-        title="4. Element Ratios (Placeholder)",
+        "pages/04_element_ratios.py",
+        title="4. Element Ratios",
         icon="⚖️",
     ),
     st.Page(
-        "pages/05_levelling_comparison_placeholder.py",
-        title="5. Levelling Comparison (Placeholder)",
+        "pages/05_levelling_comparison.py",
+        title="5. Levelling Comparison",
         icon="🔄",
     ),
 ]

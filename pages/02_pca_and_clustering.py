@@ -16,12 +16,18 @@ element_color_map = ctx["element_color_map"]
 
 st.subheader("Principal Component Analysis (PCA) & K-Means Clustering")
 
+default_pca_features = [
+    col
+    for col in active_element_cols
+    if col.split(" ")[0].lstrip("[").rstrip("]") != "Cd"
+]
+
 pca_c1, pca_c2, pca_c3 = st.columns([2, 1, 1])
 with pca_c1:
     pca_features = st.multiselect(
         "Features for normalization, K-Means & PCA",
         options=active_element_cols,
-        default=active_element_cols,
+        default=default_pca_features,
         key="p2_pca_features",
     )
 with pca_c2:

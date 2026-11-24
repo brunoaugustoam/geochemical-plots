@@ -95,16 +95,14 @@ else:
 
 st.divider()
 st.markdown(f"### Interactive Boxplots by `{group_by_feature}`")
-b1, b2, b3, b4, b5 = st.columns(5)
+b1, b2, b3, b4 = st.columns(4)
 with b1:
     box_log = st.checkbox("Log y-axis", value=True, key="p1_box_log")
 with b2:
     box_split_season = st.checkbox("Separate seasons side-by-side", value=False, key="p1_box_season")
 with b3:
-    box_split_ref = st.checkbox("Separate REF-1..3 vs REF-4..5", value=True, key="p1_box_ref")
-with b4:
     point_opt = st.selectbox("Points mode", options=["outliers", "all", "False"], index=0, key="p1_box_pts")
-with b5:
+with b4:
     box_ncols = st.number_input("Boxplot columns", min_value=1, max_value=4, value=2, key="p1_box_ncols")
 
 if selected_cols_t1 and group_by_feature in df_p1.columns and not df_p1.empty:
@@ -118,7 +116,6 @@ if selected_cols_t1 and group_by_feature in df_p1.columns and not df_p1.empty:
         point_mode=False if point_opt == "False" else point_opt,
         log_scale=box_log,
         split_by_season=box_split_season,
-        separate_ref_groups=box_split_ref,
         season_order=SEASON_FILTER,
     )
     st.plotly_chart(fig_box, use_container_width=True)

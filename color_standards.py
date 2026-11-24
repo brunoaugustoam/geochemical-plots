@@ -205,8 +205,10 @@ TRANSECT_COLORS = {
     "T3": "#2ca02c",
     "T4": "#d62728",
     "T5": "#9467bd",
-    "Control": "#7f7f7f",
-    "Reference": "#17becf",
+    "Background": "#1fb433",
+    "Site": "#8c564b",
+    "Control": "#a2a2a2",
+    "Reference": "#3F5546",
 }
 
 # Standard colors by Distance (m)
@@ -215,8 +217,9 @@ DISTANCE_COLORS = {
     50: "#d62728",
     100: "#ff7f0e",
     250: "#e377c2",
-    500: "#2ca02c",
-    1000: "#1f77b4",
+    500: "#024b5e",
+    1000: "#0f9bff",
+    2000: "#1fb433",
 }
 
 # Independent reference sample colors:
