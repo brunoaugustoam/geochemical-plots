@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<OGRVRTDataSource>
+    <OGRVRTLayer name="NAL_Filters REPORT_2025_11_13_resumed-DataReportEdit">
+        <SrcDataSource relativeToVRT="1">NAL_Filters REPORT_2025_11_13_resumed.xlsx</SrcDataSource>
+        <!--Header=False-->
+        <SrcLayer>DataReportEdit</SrcLayer>
+        <Field name="Sample ID" src="Sample ID" type="String"/>
+        <Field name="Season" src="Season" type="String"/>
+        <Field name="Dust sampler_ID" src="Dust sampler_ID" type="String"/>
+        <Field name="Transect " src="Transect " type="String"/>
+        <Field name="Distance (m)" src="Distance (m)" type="String"/>
+        <Field name="Latitude" src="Latitude" type="String"/>
+        <Field name="Lat Deg" src="Lat Deg" type="Integer"/>
+        <Field name="Lat Min" src="Lat Min" type="Integer"/>
+        <Field name="Lat Sec" src="Lat Sec" type="Integer"/>
+        <Field name="LatDMS" src="LatDMS" type="Real"/>
+        <Field name="Longitude" src="Longitude" type="String"/>
+        <Field name="Lon Deg" src="Lon Deg" type="Integer"/>
+        <Field name="Lon Min" src="Lon Min" type="Integer"/>
+        <Field name="Lon Sec" src="Lon Sec" type="Integer"/>
+        <Field name="LonDMS" src="LonDMS" type="Real"/>
+        <Field name="[Al] (ppm)" src="[Al] (ppm)" type="Real"/>
+        <Field name="[Al] (ppm/g of filter)" src="[Al] (ppm/g of filter)" type="Real"/>
+        <Field name="[Al] (ppm/g of filter)" src="[Al] (ppm/g of filter)" type="Real"/>
+        <Field name="[Al] (ppm)" src="[Al] (ppm)" type="Real"/>
+        <Field name="mg/dm^2/day" src="mg/dm^2/day" type="Real"/>
+        <Field name="[As] (ppm)" src="[As] (ppm)" type="Real"/>
+        <Field name="[As] (ppm/g of filter)" src="[As] (ppm/g of filter)" type="Real"/>
+        <Field name="[As] (ppm/g of filter)" src="[As] (ppm/g of filter)" type="Real"/>
+        <Field name="[As] (ppm)" src="[As] (ppm)" type="Real"/>
+        <Field name="mg/dm^2/day" src="mg/dm^2/day" type="Real"/>
+        <Field name="[Ba] (ppm)" src="[Ba] (ppm)" type="Real"/>
+        <Field name="[Ba] (ppm/g of filter)" src="[Ba] (ppm/g of filter)" type="Real"/>
+        <Field name="[Ba] (ppm/g of filter)" src="[Ba] (ppm/g of filter)" type="Real"/>
+        <Field name="[Ba] (ppm)" src="[Ba] (ppm)" type="Real"/>
+        <Field name="mg/dm^2/day" src="mg/dm^2/day" type="Real"/>
+        <Field name="[Bi] (ppm)" src="[Bi] (ppm)" type="Real"/>
+        <Field name="[Bi] (ppm/g of filter)" src="[Bi] (ppm/g of filter)" type="Real"/>
+        <Field name="[Bi] (ppm/g of filter)" src="[Bi] (ppm/g of filter)" type="Real"/>
+        <Field name="[Bi] (ppm)" src="[Bi] (ppm)" type="Real"/>
+        <Field name="mg/dm^2/day" src="mg/dm^2/day" type="Real"/>
+        <Field name="[Ca] (ppm)" src="[Ca] (ppm)" type="Real"/>
+        <Field name="[Ca] (ppm/g of filter)" src="[Ca] (ppm/g of filter)" type="Real"/>
+        <Field name="[Ca] (ppm/g of filter)" src="[Ca] (ppm/g of filter)" type="Real"/>
+        <Field name="[Ca] (ppm)" src="[Ca] (ppm)" type="Real"/>
+        <Field name="mg/dm^2/day" src="mg/dm^2/day" type="Real"/>
+        <Field name="[Cd] (ppm)" src="[Cd] (ppm)" type="Real"/>
+        <Field name="[Cd] (ppm/g of filter)" src="[Cd] (ppm/g of filter)" type="Real"/>
+        <Field name="[Cd] (ppm/g of filter)" src="[Cd] (ppm/g of filter)" type="Real"/>
+        <Field name="[Cd] (ppm)" src="[Cd] (ppm)" type="Real"/>
+        <Field name="mg/dm^2/day" src="mg/dm^2/day" type="Real"/>
+        <Field name="[Co] (ppm)" src="[Co] (ppm)" type="Real"/>
+        <Field name="[Co] (ppm/g of filter)" src="[Co] (ppm/g of filter)" type="Real"/>
+        <Field name="[Co] (ppm/g of filter)" src="[Co] (ppm/g of filter)" type="Real"/>
+        <Field name="[Co] (ppm)" src="[Co] (ppm)" type="Real"/>
+        <Field name="mg/dm^2/day" src="mg/dm^2/day" type="Real"/>
+        <Field name="[Cr] (ppm)" src="[Cr] (ppm)" type="Real"/>
+        <Field name="[Cr] (ppm/g of filter)" src="[Cr] (ppm/g of filter)" type="Real"/>
+        <Field name="[Cr] (ppm/g of filter)" src="[Cr] (ppm/g of filter)" type="Real"/>
+        <Field name="[Cr] (ppm)" src="[Cr] (ppm)" type="Real"/>
+        <Field name="mg/dm^2/day" src="mg/dm^2/day" type="Real"/>
+        <Field name="[Cu] (ppm)" src="[Cu] (ppm)" type="Real"/>
+        <Field name="[Cu] (ppm/g of filter)" src="[Cu] (ppm/g of filter)" type="Real"/>
+        <Field name="[Cu] (ppm/g of filter)" src="[Cu] (ppm/g of filter)" type="Real"/>
+        <Field name="[Cu] (ppm)" src="[Cu] (ppm)" type="Real"/>
+        <Field name="mg/dm^2/day" src="mg/dm^2/day" type="Real"/>
+        <Field name="[Fe] (ppm)" src="[Fe] (ppm)" type="Real"/>
+        <Field name="[Fe] (ppm/g of filter)" src="[Fe] (ppm/g of filter)" type="Real"/>
+        <Field name="[Fe] (ppm/g of filter)" src="[Fe] (ppm/g of filter)" type="Real"/>
+        <Field name="[Fe] (ppm)" src="[Fe] (ppm)" type="Real"/>
+        <Field name="mg/dm^2/day" src="mg/dm^2/day" type="Real"/>
+        <Field name="[K] (ppm)" src="[K] (ppm)" type="Real"/>
+        <Field name="[K] (ppm/g of filter)" src="[K] (ppm/g of filter)" type="Real"/>
+        <Field name="[K] (ppm/g of filter)" src="[K] (ppm/g of filter)" type="Real"/>
+        <Field name="[K] (ppm)" src="[K] (ppm)" type="Real"/>
+        <Field name="mg/dm^2/day" src="mg/dm^2/day" type="Real"/>
+        <Field name="[Li] (ppm)" src="[Li] (ppm)" type="Real"/>
+        <Field name="[Li] (ppm/g of filter)" src="[Li] (ppm/g of filter)" type="Real"/>
+        <Field name="[Li] (ppm/g of filter)" src="[Li] (ppm/g of filter)" type="Real"/>
+        <Field name="[Li] (ppm)" src="[Li] (ppm)" type="Real"/>
+        <Field name="mg/dm^2/day" src="mg/dm^2/day" type="Real"/>
+        <Field name="[Mg] (ppm)" src="[Mg] (ppm)" type="Real"/>
+        <Field name="[Mg] (ppm/g of filter)" src="[Mg] (ppm/g of filter)" type="Real"/>
+        <Field name="[Mg] (ppm/g of filter)" src="[Mg] (ppm/g of filter)" type="Real"/>
+        <Field name="[Mg] (ppm)" src="[Mg] (ppm)" type="Real"/>
+        <Field name="mg/dm^2/day" src="mg/dm^2/day" type="Real"/>
+        <Field name="[Mn] (ppm)" src="[Mn] (ppm)" type="Real"/>
+        <Field name="[Mn] (ppm/g of filter)" src="[Mn] (ppm/g of filter)" type="Real"/>
+        <Field name="[Mn] (ppm/g of filter)" src="[Mn] (ppm/g of filter)" type="Real"/>
+        <Field name="[Mn] (ppm)" src="[Mn] (ppm)" type="Real"/>
+        <Field name="mg/dm^2/day" src="mg/dm^2/day" type="Real"/>
+        <Field name="[Mo] (ppm)" src="[Mo] (ppm)" type="Real"/>
+        <Field name="[Mo] (ppm/g of filter)" src="[Mo] (ppm/g of filter)" type="Real"/>
+        <Field name="[Mo] (ppm/g of filter)" src="[Mo] (ppm/g of filter)" type="Real"/>
+        <Field name="[Mo] (ppm)" src="[Mo] (ppm)" type="Real"/>
+        <Field name="mg/dm^2/day" src="mg/dm^2/day" type="Real"/>
+        <Field name="[Na] (ppm)" src="[Na] (ppm)" type="Real"/>
+        <Field name="[Na] (ppm/g of filter)" src="[Na] (ppm/g of filter)" type="Real"/>
+        <Field name="[Na] (ppm/g of filter)" src="[Na] (ppm/g of filter)" type="Real"/>
+        <Field name="[Na] (ppm)" src="[Na] (ppm)" type="Real"/>
+        <Field name="mg/dm^2/day" src="mg/dm^2/day" type="Real"/>
+        <Field name="[Ni] (ppm)" src="[Ni] (ppm)" type="Real"/>
+        <Field name="[Ni] (ppm/g of filter)" src="[Ni] (ppm/g of filter)" type="Real"/>
+        <Field name="[Ni] (ppm/g of filter)" src="[Ni] (ppm/g of filter)" type="Real"/>
+        <Field name="[Ni] (ppm)" src="[Ni] (ppm)" type="Real"/>
+        <Field name="mg/dm^2/day" src="mg/dm^2/day" type="Real"/>
+        <Field name="[P] (ppm)" src="[P] (ppm)" type="Real"/>
+        <Field name="[P] (ppm/g of filter)" src="[P] (ppm/g of filter)" type="Real"/>
+        <Field name="[P] (ppm/g of filter)" src="[P] (ppm/g of filter)" type="Real"/>
+        <Field name="[P] (ppm)" src="[P] (ppm)" type="Real"/>
+        <Field name="mg/dm^2/day" src="mg/dm^2/day" type="Real"/>
+        <Field name="[Pb] (ppm)" src="[Pb] (ppm)" type="Real"/>
+        <Field name="[Pb] (ppm/g of filter)" src="[Pb] (ppm/g of filter)" type="Real"/>
+        <Field name="[Pb] (ppm/g of filter)" src="[Pb] (ppm/g of filter)" type="Real"/>
+        <Field name="[Pb] (ppm)" src="[Pb] (ppm)" type="Real"/>
+        <Field name="mg/dm^2/day" src="mg/dm^2/day" type="Real"/>
+        <Field name="[S (ICP)] (ppm)" src="[S (ICP)] (ppm)" type="Real"/>
+        <Field name="[S (ICP)] (ppm/g of filter)" src="[S (ICP)] (ppm/g of filter)" type="Real"/>
+        <Field name="[S (ICP)] (ppm/g of filter)" src="[S (ICP)] (ppm/g of filter)" type="Real"/>
+        <Field name="[S (ICP)] (ppm)" src="[S (ICP)] (ppm)" type="Real"/>
+        <Field name="mg/dm^2/day" src="mg/dm^2/day" type="Real"/>
+        <Field name="[Sb] (ppm)" src="[Sb] (ppm)" type="Real"/>
+        <Field name="[Sb] (ppm/g of filter)" src="[Sb] (ppm/g of filter)" type="Real"/>
+        <Field name="[Sb] (ppm/g of filter)" src="[Sb] (ppm/g of filter)" type="Real"/>
+        <Field name="[Sb] (ppm)" src="[Sb] (ppm)" type="Real"/>
+        <Field name="mg/dm^2/day" src="mg/dm^2/day" type="Real"/>
+        <Field name="[Se] (ppm)" src="[Se] (ppm)" type="Real"/>
+        <Field name="[Se] (ppm/g of filter)" src="[Se] (ppm/g of filter)" type="Real"/>
+        <Field name="[Se] (ppm/g of filter)" src="[Se] (ppm/g of filter)" type="Real"/>
+        <Field name="[Se] (ppm)" src="[Se] (ppm)" type="Real"/>
+        <Field name="mg/dm^2/day" src="mg/dm^2/day" type="Real"/>
+        <Field name="[Si] (ppm)" src="[Si] (ppm)" type="Real"/>
+        <Field name="[Si] (ppm/g of filter)" src="[Si] (ppm/g of filter)" type="Real"/>
+        <Field name="[Si] (ppm/g of filter)" src="[Si] (ppm/g of filter)" type="Real"/>
+        <Field name="[Si] (ppm)" src="[Si] (ppm)" type="Real"/>
+        <Field name="mg/dm^2/day" src="mg/dm^2/day" type="Real"/>
+        <Field name="[Sr] (ppm)" src="[Sr] (ppm)" type="Real"/>
+        <Field name="[Sr] (ppm/g of filter)" src="[Sr] (ppm/g of filter)" type="Real"/>
+        <Field name="[Sr] (ppm/g of filter)" src="[Sr] (ppm/g of filter)" type="Real"/>
+        <Field name="[Sr] (ppm)" src="[Sr] (ppm)" type="Real"/>
+        <Field name="mg/dm^2/day" src="mg/dm^2/day" type="Real"/>
+        <Field name="[Ti] (ppm)" src="[Ti] (ppm)" type="Real"/>
+        <Field name="[Ti] (ppm/g of filter)" src="[Ti] (ppm/g of filter)" type="Real"/>
+        <Field name="[Ti] (ppm/g of filter)" src="[Ti] (ppm/g of filter)" type="Real"/>
+        <Field name="[Ti] (ppm)" src="[Ti] (ppm)" type="Real"/>
+        <Field name="mg/dm^2/day" src="mg/dm^2/day" type="Real"/>
+        <Field name="[V] (ppm)" src="[V] (ppm)" type="Real"/>
+        <Field name="[V] (ppm/g of filter)" src="[V] (ppm/g of filter)" type="Real"/>
+        <Field name="[V] (ppm/g of filter)" src="[V] (ppm/g of filter)" type="Real"/>
+        <Field name="[V] (ppm)" src="[V] (ppm)" type="Real"/>
+        <Field name="mg/dm^2/day" src="mg/dm^2/day" type="Real"/>
+        <Field name="[Zn] (ppm)" src="[Zn] (ppm)" type="Real"/>
+        <Field name="[Zn] (ppm/g of filter)" src="[Zn] (ppm/g of filter)" type="Real"/>
+        <Field name="[Zn] (ppm/g of filter)" src="[Zn] (ppm/g of filter)" type="Real"/>
+        <Field name="[Zn] (ppm)" src="[Zn] (ppm)" type="Real"/>
+        <Field name="mg/dm^2/day" src="mg/dm^2/day" type="Real"/>
+        <Field name="[Zr] (ppm)" src="[Zr] (ppm)" type="Real"/>
+        <Field name="[Zr] (ppm/g of filter)" src="[Zr] (ppm/g of filter)" type="Real"/>
+        <Field name="[Zr] (ppm/g of filter)" src="[Zr] (ppm/g of filter)" type="Real"/>
+        <Field name="[Zr] (ppm)" src="[Zr] (ppm)" type="Real"/>
+        <Field name="mg/dm^2/day" src="mg/dm^2/day" type="Real"/>
+        <Field name="[As] (ppb)" src="[As] (ppb)" type="Real"/>
+        <Field name="[As] (ppb/g of filter)" src="[As] (ppb/g of filter)" type="Real"/>
+        <Field name="[As] (ppb/g of filter)" src="[As] (ppb/g of filter)" type="Real"/>
+        <Field name="[As] (ppb)" src="[As] (ppb)" type="Real"/>
+        <Field name="µg/dm^2/day" src="µg/dm^2/day" type="Real"/>
+        <Field name="[Ba] (ppb)" src="[Ba] (ppb)" type="Real"/>
+        <Field name="[Ba] (ppb/g of filter)" src="[Ba] (ppb/g of filter)" type="Real"/>
+        <Field name="[Ba] (ppb/g of filter)" src="[Ba] (ppb/g of filter)" type="Real"/>
+        <Field name="[Ba] (ppb)" src="[Ba] (ppb)" type="Real"/>
+        <Field name="µg/dm^2/day" src="µg/dm^2/day" type="Real"/>
+        <Field name="[Be] (ppb)" src="[Be] (ppb)" type="Real"/>
+        <Field name="[Be] (ppb/g of filter)" src="[Be] (ppb/g of filter)" type="Real"/>
+        <Field name="[Be] (ppb/g of filter)" src="[Be] (ppb/g of filter)" type="Real"/>
+        <Field name="[Be] (ppb)" src="[Be] (ppb)" type="Real"/>
+        <Field name="µg/dm^2/day" src="µg/dm^2/day" type="Real"/>
+        <Field name="[Ce] (ppb)" src="[Ce] (ppb)" type="Real"/>
+        <Field name="[Ce] (ppb/g of filter)" src="[Ce] (ppb/g of filter)" type="Real"/>
+        <Field name="[Ce] (ppb/g of filter)" src="[Ce] (ppb/g of filter)" type="Real"/>
+        <Field name="[Ce] (ppb)" src="[Ce] (ppb)" type="Real"/>
+        <Field name="µg/dm^2/day" src="µg/dm^2/day" type="Real"/>
+        <Field name="[Co] (ppb)" src="[Co] (ppb)" type="Real"/>
+        <Field name="[Co] (ppb/g of filter)" src="[Co] (ppb/g of filter)" type="Real"/>
+        <Field name="[Co] (ppb/g of filter)" src="[Co] (ppb/g of filter)" type="Real"/>
+        <Field name="[Co] (ppb)" src="[Co] (ppb)" type="Real"/>
+        <Field name="µg/dm^2/day" src="µg/dm^2/day" type="Real"/>
+        <Field name="[Cu] (ppb)" src="[Cu] (ppb)" type="Real"/>
+        <Field name="[Cu] (ppb/g of filter)" src="[Cu] (ppb/g of filter)" type="Real"/>
+        <Field name="[Cu] (ppb/g of filter)" src="[Cu] (ppb/g of filter)" type="Real"/>
+        <Field name="[Cu] (ppb)" src="[Cu] (ppb)" type="Real"/>
+        <Field name="µg/dm^2/day" src="µg/dm^2/day" type="Real"/>
+        <Field name="[Nb] (ppb)" src="[Nb] (ppb)" type="Real"/>
+        <Field name="[Nb] (ppb/g of filter)" src="[Nb] (ppb/g of filter)" type="Real"/>
+        <Field name="[Nb] (ppb/g of filter)" src="[Nb] (ppb/g of filter)" type="Real"/>
+        <Field name="[Nb] (ppb)" src="[Nb] (ppb)" type="Real"/>
+        <Field name="µg/dm^2/day" src="µg/dm^2/day" type="Real"/>
+        <Field name="[Pb] (ppb)" src="[Pb] (ppb)" type="Real"/>
+        <Field name="[Pb] (ppb/g of filter)" src="[Pb] (ppb/g of filter)" type="Real"/>
+        <Field name="[Pb] (ppb/g of filter)" src="[Pb] (ppb/g of filter)" type="Real"/>
+        <Field name="[Pb] (ppb)" src="[Pb] (ppb)" type="Real"/>
+        <Field name="µg/dm^2/day" src="µg/dm^2/day" type="Real"/>
+        <Field name="[Rb] (ppb)" src="[Rb] (ppb)" type="Real"/>
+        <Field name="[Rb] (ppb/g of filter)" src="[Rb] (ppb/g of filter)" type="Real"/>
+        <Field name="[Rb] (ppb/g of filter)" src="[Rb] (ppb/g of filter)" type="Real"/>
+        <Field name="[Rb] (ppb)" src="[Rb] (ppb)" type="Real"/>
+        <Field name="µg/dm^2/day" src="µg/dm^2/day" type="Real"/>
+        <Field name="[Tl] (ppb)" src="[Tl] (ppb)" type="Real"/>
+        <Field name="[Tl] (ppb/g of filter)" src="[Tl] (ppb/g of filter)" type="Real"/>
+        <Field name="[Tl] (ppb/g of filter)" src="[Tl] (ppb/g of filter)" type="Real"/>
+        <Field name="[Tl] (ppb)" src="[Tl] (ppb)" type="Real"/>
+        <Field name="µg/dm^2/day" src="µg/dm^2/day" type="Real"/>
+        <Field name="[V] (ppb)" src="[V] (ppb)" type="Real"/>
+        <Field name="[V] (ppb/g of filter)" src="[V] (ppb/g of filter)" type="Real"/>
+        <Field name="[V] (ppb/g of filter)" src="[V] (ppb/g of filter)" type="Real"/>
+        <Field name="[V] (ppb)" src="[V] (ppb)" type="Real"/>
+        <Field name="µg/dm^2/day" src="µg/dm^2/day" type="Real"/>
+        <GeometryType>wkbPoint</GeometryType>
+        <LayerSRS>EPSG:4326</LayerSRS>
+        <GeometryField encoding="PointFromColumns" x="LonDMS" y="LatDMS"/>
+    </OGRVRTLayer>
+</OGRVRTDataSource>

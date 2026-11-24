@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<OGRVRTDataSource>
+    <OGRVRTLayer name="NAL_Filters REPORT_2025_11_13_resumed-RESUMED">
+        <SrcDataSource relativeToVRT="1">NAL_Filters REPORT_2025_11_13_resumed.xlsx</SrcDataSource>
+        <!--Header=True-->
+        <SrcSql dialect="sqlite">SELECT * FROM 'RESUMED' LIMIT 27 OFFSET 1</SrcSql>
+        <Field name="Sample ID" src="Field1" type="String"/>
+        <Field name="Season" src="Field2" type="String"/>
+        <Field name="Dust sampler_ID" src="Field3" type="String"/>
+        <Field name="Transect " src="Field4" type="String"/>
+        <Field name="LatDMS" src="Field5" type="String"/>
+        <Field name="LonDMS" src="Field6" type="String"/>
+        <Field name="[Al] (ppm)" src="Field7" type="String"/>
+        <Field name="[As] (ppm)" src="Field8" type="String"/>
+        <Field name="[Ba] (ppm)" src="Field9" type="String"/>
+        <Field name="[Bi] (ppm)" src="Field10" type="String"/>
+        <Field name="[Ca] (ppm)" src="Field11" type="String"/>
+        <Field name="[Cd] (ppm)" src="Field12" type="String"/>
+        <Field name="[Co] (ppm)" src="Field13" type="String"/>
+        <Field name="[Cr] (ppm)" src="Field14" type="String"/>
+        <Field name="[Cu] (ppm)" src="Field15" type="String"/>
+        <Field name="[Fe] (ppm)" src="Field16" type="String"/>
+        <Field name="[K] (ppm)" src="Field17" type="String"/>
+        <Field name="[Li] (ppm)" src="Field18" type="String"/>
+        <Field name="[Mg] (ppm)" src="Field19" type="String"/>
+        <Field name="[Mn] (ppm)" src="Field20" type="String"/>
+        <Field name="[Mo] (ppm)" src="Field21" type="String"/>
+        <Field name="[Na] (ppm)" src="Field22" type="String"/>
+        <Field name="[Ni] (ppm)" src="Field23" type="String"/>
+        <Field name="[P] (ppm)" src="Field24" type="String"/>
+        <Field name="[Pb] (ppm)" src="Field25" type="String"/>
+        <Field name="[S (ICP)] (ppm)" src="Field26" type="String"/>
+        <Field name="[Sb] (ppm)" src="Field27" type="String"/>
+        <Field name="[Se] (ppm)" src="Field28" type="String"/>
+        <Field name="[Si] (ppm)" src="Field29" type="String"/>
+        <Field name="[Sr] (ppm)" src="Field30" type="String"/>
+        <Field name="[Ti] (ppm)" src="Field31" type="String"/>
+        <Field name="[V] (ppm)" src="Field32" type="String"/>
+        <Field name="[Zn] (ppm)" src="Field33" type="String"/>
+        <Field name="[Zr] (ppm)" src="Field34" type="String"/>
+        <Field name="[As] (ppb)" src="Field35" type="String"/>
+        <Field name="[Ba] (ppb)" src="Field36" type="String"/>
+        <Field name="[Be] (ppb)" src="Field37" type="String"/>
+        <Field name="[Ce] (ppb)" src="Field38" type="String"/>
+        <Field name="[Co] (ppb)" src="Field39" type="String"/>
+        <Field name="[Cu] (ppb)" src="Field40" type="String"/>
+        <Field name="[Nb] (ppb)" src="Field41" type="String"/>
+        <Field name="[Pb] (ppb)" src="Field42" type="String"/>
+        <Field name="[Rb] (ppb)" src="Field43" type="String"/>
+        <Field name="[Tl] (ppb)" src="Field44" type="String"/>
+        <Field name="[V] (ppb)" src="Field45" type="String"/>
+        <GeometryType>wkbPoint</GeometryType>
+        <LayerSRS>EPSG:4326</LayerSRS>
+        <GeometryField encoding="PointFromColumns" x="Field6" y="Field5"/>
+    </OGRVRTLayer>
+</OGRVRTDataSource>
