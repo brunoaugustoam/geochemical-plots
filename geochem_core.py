@@ -2632,3 +2632,87 @@ def get_combined_ms_oes_df(
             merged = merged.drop(columns=[alt])
 
     return merged, ms_prefixed + oes_prefixed
+
+
+
+def compute_single_ratio_series(
+    df_in: pd.DataFrame,
+    num_col: str,
+    den_col: str,
+    zero_or_neg_to_nan: bool = False,
+) -> tuple[pd.Series, str]:
+    """Compute `num_col / den_col` series and a clean ratio label."""
+    num_el = num_col.split(" ")[0].lstrip("[").rstrip("]").strip()
+    den_el = den_col.split(" ")[0].lstrip("[").rstrip("]").strip()
+    label = f"{num_el} / {den_el}"
+
+    num_vals = pd.to_numeric(df_in[num_col], errors="coerce")
+    den_vals = pd.to_numeric(df_in[den_col], errors="coerce")
+    valid_den = den_vals.where(den_vals != 0, np.nan)
+
+    ratio = (num_vals / valid_den).replace([np.inf, -np.inf], np.nan)
+    if zero_or_neg_to_nan:
+        ratio = ratio.where(ratio > 0, np.nan)
+    return ratio, label
+
+
+def attach_oes_ppm2_divisors(
+    df_ms: pd.DataFrame,
+    df_oes_raw: pd.DataFrame | None,
+) -> tuple[pd.DataFrame, list[str]]:
+    """
+    Merge OES `ppm_2` (`[ppm #2]`) columns (e.g., `Ca [ppm #2]`) onto `df_ms`
+    by `Sample ID` so they can be selected directly as divisors on Page 4.
+    Returns `(df_with_ppm2, added_ppm2_col_names)`.
+    """
+    if (
+        df_oes_raw is None
+        or df_oes_raw.empty
+        or "Sample ID" not in df_ms.columns
+        or "Sample ID" not in df_oes_raw.columns
+    ):
+        return df_ms, []
+
+    ppm2_cols = [
+        c
+        for c in df_oes_raw.columns
+        if ("[ppm #2]" in str(c).lower()) or ("ppm_2" in str(c).lower())
+    ]
+    if not ppm2_cols:
+        return df_ms, []
+
+    oes_sub = df_oes_raw[["Sample ID"] + ppm2_cols].copy()
+    oes_sub["Sample ID"] = oes_sub["Sample ID"].astype(str).str.strip()
+    oes_sub = oes_sub.drop_duplicates(subset=["Sample ID"], keep="first")
+
+    rename_map = {}
+    added_cols = []
+    for c in ppm2_cols:
+        col_str = str(c).strip()
+        label = col_str if "[oes]" in col_str.lower() else f"{col_str} [OES]"
+        rename_map[c] = label
+        added_cols.append(label)
+
+        s_num = pd.to_numeric(oes_sub[c], errors="coerce")
+        pos_vals = s_num[s_num > 0]
+        if not pos_vals.empty:
+            floor_val = float(pos_vals.min() / np.sqrt(2.0))
+            s_num = s_num.where(s_num > 0, floor_val)
+        oes_sub[c] = s_num
+
+    oes_sub = oes_sub.rename(columns=rename_map)
+
+    out = df_ms.copy()
+    out["_join_id"] = out["Sample ID"].astype(str).str.strip()
+    out = pd.merge(
+        out,
+        oes_sub,
+        left_on="_join_id",
+        right_on="Sample ID",
+        how="left",
+        suffixes=("", "_oes_dup"),
+    )
+    out = out.drop(
+        columns=[c for c in ["_join_id", "Sample ID_oes_dup"] if c in out.columns]
+    )
+    return out, added_cols

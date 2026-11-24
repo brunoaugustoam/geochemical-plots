@@ -5,13 +5,11 @@ optional seasonal levelling (OFF by default with prominent banner), global filte
 and page navigation.
 """
 
-import os
 import pandas as pd
 import streamlit as st
 
 from color_standards import get_element_color_map, get_group_color_map
 from geochem_core import (
-    DEFAULT_SHEET,
     REF_GROUP_ORDER,
     SEASON_FILTER,
     apply_seasonal_levelling,
@@ -32,7 +30,7 @@ with st.sidebar:
     uploaded_file = st.file_uploader(
         "Drag and drop an .xlsx file here",
         type=["xlsx"],
-        help="Defaults to sheet 'ms'. Uses local fallback only if no file is uploaded.",
+        help="Defaults to sheet 'ms'.",
     )
     sheet_choice = st.selectbox(
         "Worksheet name",
@@ -53,7 +51,7 @@ with st.sidebar:
     # Explicitly OFF by default
     enable_levelling = st.toggle(
         "Enable Seasonal Levelling",
-        value=True,
+        value=False,
         help="Off by default. Runs after negative/NaN cleaning when enabled.",
     )
     levelling_method = st.selectbox(
@@ -63,15 +61,11 @@ with st.sidebar:
         disabled=not enable_levelling,
     )
 
-# local_fallback_path = os.path.join(DEFAULT_ROOT, DEFAULT_FOLDER, DEFAULT_FILE)
 file_bytes = uploaded_file.getvalue() if uploaded_file is not None else None
 
-if file_bytes is None:# and not os.path.exists(local_fallback_path):
+if file_bytes is None:
     st.title("🧪 Bulk Geochemical Data Explorer")
-    st.info(
-        "Please drag and drop an `.xlsx` file in the sidebar to begin "
-
-    )
+    st.info("Please drag and drop an `.xlsx` file in the sidebar to begin.")
     st.stop()
 
 df_raw = load_excel_sheet(
@@ -196,8 +190,6 @@ else:
 
 # Apply sample filters
 df_filtered = df_processed.copy()
-
-
 if "Season" in df_filtered.columns and selected_seasons:
     df_filtered = df_filtered[df_filtered["Season"].isin(selected_seasons)]
 if "Transect" in df_filtered.columns and selected_transects:
@@ -206,6 +198,17 @@ if "Distance (m)" in df_filtered.columns and selected_distances:
     df_filtered = df_filtered[df_filtered["Distance (m)"].isin(selected_distances)]
 if "Ref_Group" in df_filtered.columns and selected_ref_groups:
     df_filtered = df_filtered[df_filtered["Ref_Group"].isin(selected_ref_groups)]
+
+# Provide remapped OES table (with ppm_2 columns) when viewing `ms` so Page 4 can offer OES ppm_2 divisors
+df_oes_for_ppm2 = None
+if sheet_choice == "oes":
+    df_oes_for_ppm2 = df_mapped
+else:
+    try:
+        df_oes_raw_side = load_excel_sheet(file_bytes=file_bytes, sheet_name="oes")
+        df_oes_for_ppm2, _ = remap_geochem_columns(df_oes_raw_side, "oes")
+    except Exception:
+        df_oes_for_ppm2 = None
 
 group_series = (
     df_filtered[group_by_feature]
@@ -224,6 +227,7 @@ st.session_state["geochem_ctx"] = {
     "df_mapped": df_mapped,
     "df_cleaned": df_cleaned,
     "df_filtered": df_filtered,
+    "df_oes_raw": df_oes_for_ppm2,
     "neg_replacement_log": neg_replacement_log,
     "enable_levelling": enable_levelling,
     "levelling_method": levelling_method,

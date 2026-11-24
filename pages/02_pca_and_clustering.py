@@ -71,7 +71,7 @@ else:
         color_choices = ["Cluster"] + [
             c for c in ["Transect", "Distance (m)", "Season", "Ref_Group"] if c in scores_df.columns
         ]
-        default_color_idx = color_choices.index(group_by_feature) if group_by_feature in color_choices else 0
+        default_color_idx = color_choices.index(group_by_feature) if group_by_feature in color_choices else 1
         pca_color_by = st.selectbox("Color points by", options=color_choices, index=default_color_idx, key="p2_color_by")
     with sc4:
         ann_choices = ["None"] + [
