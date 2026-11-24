@@ -1,0 +1,24 @@
+# Ignore entire folders
+May25_Aug25_Nov25/
+__pycache__/
+.streamlit/secrets.toml
+
+# Ignore Excel files
+*.xlsx
+*.xls
+
+# Ignore Python generated files
+*.pyc
+*.pyo
+*.pyd
+
+# Ignore virtual environments
+venv/
+.venv/
+
+# Ignore Jupyter checkpoints
+.ipynb_checkpoints/
+
+# Ignore OS files
+.DS_Store
+Thumbs.db
