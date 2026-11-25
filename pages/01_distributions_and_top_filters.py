@@ -73,7 +73,7 @@ with h1:
 with h2:
     hist_split_season = st.checkbox("Overlay seasons (shaded)", value=False, key="p1_hist_season")
 with h3:
-    hist_ncols = st.number_input("Histogram columns", min_value=1, max_value=6, value=4, key="p1_hist_ncols")
+    hist_ncols = st.number_input("Histogram columns", min_value=1, max_value=6, value=3, key="p1_hist_ncols")
 with h4:
     auto_bins = st.checkbox("Auto bin count", value=True, key="p1_hist_autobins")
     hist_bins = None if auto_bins else st.slider("Bins", 5, 80, 25, key="p1_hist_bins")
@@ -101,7 +101,7 @@ with b1:
 with b2:
     box_split_season = st.checkbox("Separate seasons side-by-side", value=False, key="p1_box_season")
 with b3:
-    point_opt = st.selectbox("Points mode", options=["outliers", "all", "False"], index=0, key="p1_box_pts")
+    point_opt = st.selectbox("Points mode", options=["outliers", "all", "False"], index=1, key="p1_box_pts")
 with b4:
     box_ncols = st.number_input("Boxplot columns", min_value=1, max_value=4, value=2, key="p1_box_ncols")
 
@@ -123,7 +123,7 @@ else:
     st.info(f"Ensure `{group_by_feature}` and element columns are available to render boxplots.")
 
 st.divider()
-st.markdown("### Samples / Filters Recurring in Top-N Concentrations")
+st.markdown("### Samples Recurring in Top-N Concentrations")
 top_n_val = st.slider("Top-N per element", min_value=1, max_value=20, value=5, key="p1_top_n")
 top_summary_df = get_top_recurring_samples(
     df=df_p1,
@@ -135,3 +135,8 @@ if not top_summary_df.empty:
     st.dataframe(top_summary_df, use_container_width=True)
 else:
     st.caption("No top-N records available for the current filter selection.")
+
+with st.expander("top-N info"):
+    st.write(
+        "Smaller top_n (e.g., 3): Stricter filter — a sample only counts if it ranks among the very top 3 highest values in a column. top_appearances will generally be lower, highlighting only the most extreme/dominant samples across elements. "    )
+    st.write( "Larger top_n (e.g., 10): Broader filter — more samples qualify per column, increasing top_appearances counts and surfacing samples that consistently sit in the upper tier across multiple elements rather than just #1–#3.")

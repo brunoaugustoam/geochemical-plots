@@ -279,6 +279,10 @@ pages = [
         title="5. Levelling Comparison",
         icon="🔄",
     ),
+    st.Page(
+        "pages/06_spatial_distribution.py",
+        title="6. Spatial Distribution",
+        icon="🗺️",),
 ]
 
 nav = st.navigation(pages)

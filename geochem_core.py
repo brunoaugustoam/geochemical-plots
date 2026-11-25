@@ -2716,3 +2716,241 @@ def attach_oes_ppm2_divisors(
         columns=[c for c in ["_join_id", "Sample ID_oes_dup"] if c in out.columns]
     )
     return out, added_cols
+
+
+def plot_spatial_xy_bubble_map(
+    df_in: pd.DataFrame,
+    value_cols: list[str],
+    lat_col: str = "LatDMS",
+    lon_col: str = "LonDMS",
+    color_by: str = "Transect",
+    group_color_map: dict | None = None,
+    agg_mode: str = "Median per location",
+    size_scale_mode: str = "Sqrt",
+    max_marker_size: int = 34,
+    min_marker_size: int = 6,
+    show_labels: bool = False,
+    n_cols: int = 2,
+    title: str = "Spatial XY Distribution Map",
+) -> go.Figure:
+    """
+    Plot sampling locations on an XY map (LonDMS vs. LatDMS) where marker size
+    represents elemental concentration or ratio, and color represents Transect
+    or Distance (m).
+    """
+    valid_vals = [c for c in value_cols if c in df_in.columns]
+    if not valid_vals or lat_col not in df_in.columns or lon_col not in df_in.columns:
+        return go.Figure()
+
+    n_plots = len(valid_vals)
+    n_rows = max(1, int(np.ceil(n_plots / max(1, n_cols))))
+    v_spacing = min(0.14, 0.65 / max(n_rows - 1, 1)) if n_rows > 1 else 0.14
+
+    fig = make_subplots(
+        rows=n_rows,
+        cols=n_cols,
+        subplot_titles=valid_vals,
+        vertical_spacing=v_spacing,
+        horizontal_spacing=0.08,
+    )
+
+    has_color = color_by in df_in.columns
+    if group_color_map is None and has_color:
+        group_color_map = get_group_color_map(df_in[color_by], group_type=color_by)
+    groups_present = (
+        [g for g in (group_color_map or {}).keys() if g in set(df_in[color_by].dropna())]
+        if has_color
+        else []
+    )
+
+    id_col = "Dust sampler_ID" if "Dust sampler_ID" in df_in.columns else (
+        "Sample ID" if "Sample ID" in df_in.columns else None
+    )
+    legend_shown = set()
+
+    for idx, val_col in enumerate(valid_vals):
+        r = idx // n_cols + 1
+        c = idx % n_cols + 1
+
+        needed = [lat_col, lon_col, val_col]
+        if has_color:
+            needed.append(color_by)
+        if id_col:
+            needed.append(id_col)
+        if "Sample ID" in df_in.columns and "Sample ID" not in needed:
+            needed.append("Sample ID")
+        if "Season" in df_in.columns:
+            needed.append("Season")
+
+        sub = df_in[needed].copy()
+        sub[lat_col] = pd.to_numeric(sub[lat_col], errors="coerce")
+        sub[lon_col] = pd.to_numeric(sub[lon_col], errors="coerce")
+        sub[val_col] = pd.to_numeric(sub[val_col], errors="coerce")
+        sub = sub.dropna(subset=[lat_col, lon_col, val_col])
+
+        if sub.empty:
+            continue
+
+        # Handle shared coordinates across seasons / replicates
+        if agg_mode != "Raw points (no aggregation)":
+            agg_fn = {
+                "Median per location": "median",
+                "Mean per location": "mean",
+                "Max per location": "max",
+            }.get(agg_mode, "median")
+
+            grp_keys = [lat_col, lon_col] + ([color_by] if has_color else [])
+            agg_dict = {val_col: agg_fn, "_n_samples": (val_col, "count")}
+            if id_col:
+                agg_dict[id_col] = (id_col, "first")
+            if "Sample ID" in sub.columns and "Sample ID" != id_col:
+                agg_dict["Sample ID"] = (
+                    "Sample ID",
+                    lambda s: ", ".join(dict.fromkeys(s.astype(str))),
+                )
+
+            # Build named aggregation cleanly
+            named_aggs = {
+                "_val": pd.NamedAgg(column=val_col, aggfunc=agg_fn),
+                "_n": pd.NamedAgg(column=val_col, aggfunc="count"),
+            }
+            if id_col:
+                named_aggs["_label"] = pd.NamedAgg(column=id_col, aggfunc="first")
+            elif "Sample ID" in sub.columns:
+                named_aggs["_label"] = pd.NamedAgg(column="Sample ID", aggfunc="first")
+            else:
+                sub["_tmp_lbl"] = ""
+                named_aggs["_label"] = pd.NamedAgg(column="_tmp_lbl", aggfunc="first")
+
+            if "Sample ID" in sub.columns:
+                named_aggs["_ids"] = pd.NamedAgg(
+                    column="Sample ID",
+                    aggfunc=lambda s: ", ".join(dict.fromkeys(s.astype(str))),
+                )
+            else:
+                named_aggs["_ids"] = named_aggs["_label"]
+
+            sub = sub.groupby(grp_keys, as_index=False, dropna=False).agg(**named_aggs)
+            sub[val_col] = sub["_val"]
+        else:
+            sub["_n"] = 1
+            sub["_label"] = sub[id_col].astype(str) if id_col else ""
+            sub["_ids"] = sub["Sample ID"].astype(str) if "Sample ID" in sub.columns else sub["_label"]
+            # Small deterministic jitter so stacked seasonal points at the same station stay visible
+            rng = np.random.default_rng(42)
+            lat_span = max(float(sub[lat_col].max() - sub[lat_col].min()), 1e-6)
+            lon_span = max(float(sub[lon_col].max() - sub[lon_col].min()), 1e-6)
+            sub[lat_col] = sub[lat_col] + rng.normal(0.0, 0.006 * lat_span, size=len(sub))
+            sub[lon_col] = sub[lon_col] + rng.normal(0.0, 0.006 * lon_span, size=len(sub))
+
+        # Compute marker sizes from concentration / ratio
+        raw_v = sub[val_col].to_numpy(dtype=float)
+        if size_scale_mode == "Log10":
+            pos_v = np.where(raw_v > 0, raw_v, np.nan)
+            scaled_v = np.log10(pos_v)
+        elif size_scale_mode == "Sqrt":
+            scaled_v = np.sqrt(np.maximum(raw_v, 0.0))
+        else:
+            scaled_v = raw_v
+
+        finite_mask = np.isfinite(scaled_v)
+        if finite_mask.any():
+            vmin = float(np.nanmin(scaled_v[finite_mask]))
+            vmax = float(np.nanmax(scaled_v[finite_mask]))
+            if vmax > vmin:
+                norm_v = (scaled_v - vmin) / (vmax - vmin)
+            else:
+                norm_v = np.full_like(scaled_v, 0.5)
+            norm_v = np.where(np.isfinite(norm_v), norm_v, 0.0)
+        else:
+            norm_v = np.zeros_like(raw_v)
+
+        sub["_marker_size"] = min_marker_size + norm_v * (max_marker_size - min_marker_size)
+
+        mode_str = "markers+text" if show_labels else "markers"
+
+        if not groups_present:
+            cdata = np.column_stack([sub["_ids"], sub["_val" if "_val" in sub.columns else val_col], sub["_n"]])
+            fig.add_trace(
+                go.Scatter(
+                    x=sub[lon_col].to_numpy(dtype=float),
+                    y=sub[lat_col].to_numpy(dtype=float),
+                    mode=mode_str,
+                    text=sub["_label"] if show_labels else None,
+                    textposition="top center",
+                    textfont=dict(size=9),
+                    customdata=cdata,
+                    showlegend=False,
+                    marker=dict(
+                        size=sub["_marker_size"].to_numpy(dtype=float),
+                        color="#377eb8",
+                        opacity=0.82,
+                        line=dict(width=0.8, color="#222222"),
+                    ),
+                    hovertemplate=(
+                        "<b>%{customdata[0]}</b><br>"
+                        f"{lon_col}: %{{x:.5f}}<br>"
+                        f"{lat_col}: %{{y:.5f}}<br>"
+                        f"{val_col}: %{{customdata[1]:.4g}} (n=%{{customdata[2]}})<extra></extra>"
+                    ),
+                ),
+                row=r,
+                col=c,
+            )
+        else:
+            for grp in groups_present:
+                g_df = sub[sub[color_by] == grp]
+                if g_df.empty:
+                    continue
+
+                cdata = np.column_stack([g_df["_ids"], g_df[val_col], g_df["_n"]])
+                show_leg = grp not in legend_shown
+                if show_leg:
+                    legend_shown.add(grp)
+
+                fig.add_trace(
+                    go.Scatter(
+                        x=g_df[lon_col].to_numpy(dtype=float),
+                        y=g_df[lat_col].to_numpy(dtype=float),
+                        mode=mode_str,
+                        text=g_df["_label"] if show_labels else None,
+                        textposition="top center",
+                        textfont=dict(size=9),
+                        customdata=cdata,
+                        name=str(grp),
+                        legendgroup=str(grp),
+                        showlegend=show_leg,
+                        marker=dict(
+                            size=g_df["_marker_size"].to_numpy(dtype=float),
+                            color=(group_color_map or {}).get(grp, "#377eb8"),
+                            opacity=0.84,
+                            line=dict(width=0.8, color="#222222"),
+                        ),
+                        hovertemplate=(
+                            "<b>%{customdata[0]}</b><br>"
+                            f"{color_by}: {grp}<br>"
+                            f"{lon_col}: %{{x:.5f}}<br>"
+                            f"{lat_col}: %{{y:.5f}}<br>"
+                            f"{val_col}: %{{customdata[1]:.4g}} (n=%{{customdata[2]}})<extra></extra>"
+                        ),
+                    ),
+                    row=r,
+                    col=c,
+                )
+
+        axis_idx = "" if idx == 0 else str(idx + 1)
+        fig.update_xaxes(title_text=lon_col, row=r, col=c)
+        fig.update_yaxes(
+            title_text=lat_col,
+            scaleanchor=f"x{axis_idx}",
+            scaleratio=1,
+            row=r,
+            col=c,
+        )
+
+    fig.update_layout(
+        height=max(500, 440 * n_rows),
+        title_text=f"{title} (Colored by {color_by} | Size = Value)",
+        template="plotly_white",
+    )
+    return fig
