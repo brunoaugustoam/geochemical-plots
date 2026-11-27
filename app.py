@@ -38,6 +38,53 @@ with st.sidebar:
         index=0,  # Default is 'ms'
     )
 
+file_bytes = uploaded_file.getvalue() if uploaded_file is not None else None
+
+if file_bytes is None:
+    st.title("🧪 Bulk Geochemical Data Explorer")
+    st.info("Please drag and drop an `.xlsx` file in the sidebar to begin.")
+    st.stop()
+
+df_raw = load_excel_sheet(
+    file_bytes=file_bytes,
+    sheet_name=sheet_choice,
+)
+
+df_mapped, col_meta = remap_geochem_columns(df_raw, sheet_choice)
+df_mapped = classify_reference_samples(df_mapped)
+
+# available_roles = sorted({
+#     role
+#     for roles in col_meta["element_unit_map"].values()
+#     for role in roles.keys()
+#     if role != "mult_req"
+# })
+available_roles = list(
+    dict.fromkeys(
+        role
+        for roles in col_meta["element_unit_map"].values()
+        for role in roles.keys()
+        if role != "mult_req"
+    )
+)
+# default_role = "ppb_2" if col_meta["sheet_key"] == "ms" else "ppm_2"
+default_role = "ppb_blank_corr" if col_meta["sheet_key"] == "ms" else "ppm_blank_corr"
+default_idx = available_roles.index(default_role) if default_role in available_roles else 0
+
+season_options = (
+    [s for s in SEASON_FILTER if s in set(df_mapped["Season"].dropna())]
+    if "Season" in df_mapped.columns
+    else []
+)
+if not season_options and "Season" in df_mapped.columns:
+    season_options = list(df_mapped["Season"].dropna().unique())
+with st.sidebar:
+    selected_role = st.selectbox(
+        "Unit column role for element analysis",
+        options=available_roles,
+        index=default_idx,
+    )
+
     st.divider()
     st.header("2. Data Cleaning (Pre-Levelling)")
     nan_strategy = st.selectbox(
@@ -61,44 +108,7 @@ with st.sidebar:
         disabled=not enable_levelling,
     )
 
-file_bytes = uploaded_file.getvalue() if uploaded_file is not None else None
 
-if file_bytes is None:
-    st.title("🧪 Bulk Geochemical Data Explorer")
-    st.info("Please drag and drop an `.xlsx` file in the sidebar to begin.")
-    st.stop()
-
-df_raw = load_excel_sheet(
-    file_bytes=file_bytes,
-    sheet_name=sheet_choice,
-)
-
-df_mapped, col_meta = remap_geochem_columns(df_raw, sheet_choice)
-df_mapped = classify_reference_samples(df_mapped)
-
-available_roles = sorted({
-    role
-    for roles in col_meta["element_unit_map"].values()
-    for role in roles.keys()
-    if role != "mult_req"
-})
-default_role = "ppb_2" if col_meta["sheet_key"] == "ms" else "ppm_2"
-default_idx = available_roles.index(default_role) if default_role in available_roles else 0
-
-season_options = (
-    [s for s in SEASON_FILTER if s in set(df_mapped["Season"].dropna())]
-    if "Season" in df_mapped.columns
-    else []
-)
-if not season_options and "Season" in df_mapped.columns:
-    season_options = list(df_mapped["Season"].dropna().unique())
-
-with st.sidebar:
-    selected_role = st.selectbox(
-        "Unit column role for element analysis",
-        options=available_roles,
-        index=default_idx,
-    )
     ref_season = st.selectbox(
         "Reference season for levelling",
         options=season_options if season_options else ["N/A"],

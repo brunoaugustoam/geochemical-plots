@@ -105,11 +105,10 @@ def load_excel_sheet(
     else:
         st.info("Drop file to sidebar")
 
-
 def remap_geochem_columns(df_raw: pd.DataFrame, sheet_name: str):
     """
     Deduplicate headers and remap repeated element columns in 'ms' (10 cols/el)
-    and 'oes' (5 cols/el) into unambiguous role-named columns.
+    and 'oes' (5 cols/el) into clear, unambiguous role-named columns.
     """
     df = df_raw.copy()
     df.columns = _make_unique_headers(df.columns)
@@ -124,28 +123,28 @@ def remap_geochem_columns(df_raw: pd.DataFrame, sheet_name: str):
 
     if sheet_key == "ms":
         slot_names_tmpl = [
-            "{el} [% #1]",
-            "{el} [%/g filter #1]",
-            "{el} [%/g filter #2]",
-            "{el} [% #2]",
-            "{el} [Mult req]",
-            "{el} [ppb #1]",
-            "{el} [ppb/g filter #1]",
-            "{el} [ppb/g filter #2]",
-            "{el} [ppb #2]",
-            "{el} [ug/dm2/day]",
+            "{el} pct",
+            "{el} pct/g",
+            "{el} pct/g blank corr",
+            "{el} pct blank corr",
+            "{el} Data multiplication required",
+            "{el} ppb",
+            "{el} ppb/g",
+            "{el} ppb/g blank corr",
+            "{el} ppb blank corr",
+            "{el} flux blank corr",
         ]
         role_keys = [
-            "pct_1",
-            "pct_per_g_1",
-            "pct_per_g_2",
-            "pct_2",
+            "pct",
+            "pct_per_g",
+            "pct_per_g_blank_corr",
+            "pct_blank_corr",
             "mult_req",
-            "ppb_1",
-            "ppb_per_g_1",
-            "ppb_per_g_2",
-            "ppb_2",
-            "flux_ug_dm2_day",
+            "ppb",
+            "ppb_per_g",
+            "ppb_per_g_blank_corr",
+            "ppb_blank_corr",
+            "flux_ug_dm2_day_blank_corr",
         ]
         for el in elements:
             anchor = f"[{el}] (%)"
@@ -163,22 +162,22 @@ def remap_geochem_columns(df_raw: pd.DataFrame, sheet_name: str):
                 if role != "mult_req":
                     all_element_cols.append(new_c)
 
-            if "ppb_1" in element_unit_map[el]:
-                primary_conc_cols.append(element_unit_map[el]["ppb_1"])
+            if "ppb" in element_unit_map[el]:
+                primary_conc_cols.append(element_unit_map[el]["ppb"])
     else:
         slot_names_tmpl = [
-            "{el} [ppm #1]",
-            "{el} [ppm/g filter #1]",
-            "{el} [ppm/g filter #2]",
-            "{el} [ppm #2]",
-            "{el} [mg/dm2/day]",
+            "{el} ppm",
+            "{el} ppm/g",
+            "{el} ppm/g blank corr",
+            "{el} ppm blank corr",
+            "{el} flux blank corr",
         ]
         role_keys = [
-            "ppm_1",
-            "ppm_per_g_1",
-            "ppm_per_g_2",
-            "ppm_2",
-            "flux_mg_dm2_day",
+            "ppm",
+            "ppm_per_g",
+            "ppm_per_g_blank_corr",
+            "ppm_blank_corr",
+            "flux_mg_dm2_day_blank_corr",
         ]
         for el in elements:
             anchor = f"[{el}] (ppm)"
@@ -195,8 +194,8 @@ def remap_geochem_columns(df_raw: pd.DataFrame, sheet_name: str):
                 element_unit_map[el][role] = new_c
                 all_element_cols.append(new_c)
 
-            if "ppm_1" in element_unit_map[el]:
-                primary_conc_cols.append(element_unit_map[el]["ppm_1"])
+            if "ppm" in element_unit_map[el]:
+                primary_conc_cols.append(element_unit_map[el]["ppm"])
 
     df = df.rename(columns=rename_map)
 
@@ -2655,13 +2654,12 @@ def compute_single_ratio_series(
         ratio = ratio.where(ratio > 0, np.nan)
     return ratio, label
 
-
 def attach_oes_ppm2_divisors(
     df_ms: pd.DataFrame,
     df_oes_raw: pd.DataFrame | None,
 ) -> tuple[pd.DataFrame, list[str]]:
     """
-    Merge OES `ppm_2` (`[ppm #2]`) columns (e.g., `Ca [ppm #2]`) onto `df_ms`
+    Merge OES blank-corrected ppm columns (e.g., `Ca ppm blank corr`) onto `df_ms`
     by `Sample ID` so they can be selected directly as divisors on Page 4.
     Returns `(df_with_ppm2, added_ppm2_col_names)`.
     """
@@ -2673,11 +2671,22 @@ def attach_oes_ppm2_divisors(
     ):
         return df_ms, []
 
+    col_strs = {c: str(c).strip() for c in df_oes_raw.columns}
+
+    # Prefer blank-corrected OES ppm columns (e.g., "Ca ppm blank corr"),
+    # falling back to legacy "[ppm #2]" / "ppm_2" or plain " ppm" if needed.
     ppm2_cols = [
         c
-        for c in df_oes_raw.columns
-        if ("[ppm #2]" in str(c).lower()) or ("ppm_2" in str(c).lower())
+        for c, s in col_strs.items()
+        if "ppm" in s.lower()
+        and ("blank corr" in s.lower() or "[ppm #2]" in s.lower() or "ppm_2" in s.lower())
     ]
+    if not ppm2_cols:
+        ppm2_cols = [
+            c
+            for c, s in col_strs.items()
+            if s.lower().endswith(" ppm")
+        ]
     if not ppm2_cols:
         return df_ms, []
 
@@ -2688,7 +2697,7 @@ def attach_oes_ppm2_divisors(
     rename_map = {}
     added_cols = []
     for c in ppm2_cols:
-        col_str = str(c).strip()
+        col_str = col_strs[c]
         label = col_str if "[oes]" in col_str.lower() else f"{col_str} [OES]"
         rename_map[c] = label
         added_cols.append(label)
